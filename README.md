@@ -1,4 +1,4 @@
-# mini_riverpod
+# apollon
 
 A minimal, dependency-free Riverpod-inspired state management package for Flutter built on top of `Listenable` / `ChangeNotifier`.
 
@@ -8,9 +8,9 @@ A minimal, dependency-free Riverpod-inspired state management package for Flutte
 
 - **`Provider<T>`** — declare lazy singleton providers that return any `Listenable`
 - **`ProviderScope`** — single widget that owns the container and rebuilds the tree on invalidation
-- **`context.mr(provider)`** — read a provider instance from anywhere in the widget tree
+- **`context.read(provider)`** — read a provider instance from anywhere in the widget tree
 - **`container.watch(provider)`** — declare reactive dependencies between providers (dependent is re-created when the dependency changes)
-- **`MiniRivirpodScreen`** — built-in debug screen that lists every live provider and its current state
+- **`ApollonDebugScreen`** — built-in debug screen that lists every live provider and its current state
 
 ---
 
@@ -20,7 +20,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  mini_riverpod: last_version
+  apollon: last_version
 ```
 
 Wrap your app with `ProviderScope`:
@@ -52,7 +52,7 @@ Any `Listenable` works — `ChangeNotifier`, `ValueNotifier`, or your own subcla
 ### 2. Read a provider in a widget
 
 ```dart
-context.mr(counterProvider)
+context.read(counterProvider)
 ```
 
 The call is lazy: the instance is created on the first access and cached for the lifetime of the `ProviderScope`.
@@ -63,8 +63,8 @@ Use Flutter's built-in builders — no custom `Consumer` widget needed:
 
 ```dart
 ListenableBuilder(
-  listenable: context.mr(counterProvider),
-  builder: (context, _) => Text('${context.mr(counterProvider).count}'),
+  listenable: context.read(counterProvider),
+  builder: (context, _) => Text('${context.read(counterProvider).count}'),
 ),
 ```
 
@@ -97,15 +97,15 @@ class CounterWidget extends StatelessWidget {
     return Column(
       children: [
         ListenableBuilder(
-          listenable: context.mr(counterA),
-          builder: (_, __) => Text('A: ${context.mr(counterA).count}'),
+          listenable: context.read(counterA),
+          builder: (_, __) => Text('A: ${context.read(counterA).count}'),
         ),
         ValueListenableBuilder(
-          valueListenable: context.mr(counterB),
+          valueListenable: context.read(counterB),
           builder: (_, value, __) => Text('B: $value'),
         ),
         ElevatedButton(
-          onPressed: () => context.mr(counterA).increment(),
+          onPressed: () => context.read(counterA).increment(),
           child: const Text('Increment A'),
         ),
       ],
@@ -118,11 +118,11 @@ class CounterWidget extends StatelessWidget {
 
 ## Debug screen
 
-`MiniRivirpodScreen` shows every registered provider with its runtime type and current `toString()` value. Add it to your dev build:
+`ApollonDebugScreen` shows every registered provider with its runtime type and current `toString()` value. Add it to your dev build:
 
 ```dart
 Navigator.of(context).push(
-  MaterialPageRoute(builder: (_) => MiniRivirpodScreen()),
+  MaterialPageRoute(builder: (_) => ApollonDebugScreen()),
 );
 ```
 
@@ -132,12 +132,12 @@ Navigator.of(context).push(
 
 | Symbol | Description |
 |---|---|
-| `Provider<T extends Listenable>` | Declares a provider with a factory `(BuildContext, ContainerProviders) → T` |
-| `ProviderScope` | Widget that owns the `ContainerProviders` and exposes it to the tree |
-| `context.mr(provider)` | Reads (and lazily creates) a provider instance |
+| `Provider<T extends Listenable>` | Declares a provider with a factory `(BuildContext, container) → T` |
+| `ProviderScope` | Widget that owns the container and exposes it to the tree |
+| `context.read(provider)` | Reads (and lazily creates) a provider instance |
 | `container.watch(provider)` | Inside a factory: registers a reactive dependency |
 | `container.entries` | Unmodifiable map of all live provider instances |
-| `MiniRivirpodScreen` | Debug widget listing all active providers |
+| `ApollonDebugScreen` | Debug widget listing all active providers |
 
 ---
 

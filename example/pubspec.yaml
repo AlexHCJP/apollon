@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  mini_riverpod:
+  apollon:
     path: ../
 
 dev_dependencies:

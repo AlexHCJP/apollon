@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mini_riverpod/mini_riverpod.dart';
+import 'package:apollon/apollon.dart';
 
 
 
@@ -54,31 +54,32 @@ class CounterWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ListenableBuilder(
-          listenable: context.mr(counterA),
+          listenable: context.read(counterA),
           builder: (context, child) {
-            return Text('Counter A: ${context.mr(counterA).count}');
+            return Text('Counter A: ${context.read(counterA).count}');
           },
         ),
         ValueListenableBuilder(
-          valueListenable: context.mr(counterB),
+          valueListenable: context.read(counterB),
           builder: (context, value, child) {
             return Text('Counter B: $value');
           },
         ),
-        
+
         ElevatedButton(
-          onPressed: () => context.mr(counterA).increment(),
+          onPressed: () => context.read(counterA).increment(),
           child: const Text('Increment Counter A'),
         ),
         ElevatedButton(
-          onPressed: () => context.mr(counterB).value++,
+          onPressed: () => context.read(counterB).value++,
           child: const Text('Increment Counter B'),
         ),
-        ElevatedButton(onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => MiniRivirpodScreen()),
-            );
-        }, child: Text('Tools')),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => ApollonDebugScreen()),
+          ),
+          child: const Text('Debug'),
+        ),
       ],
     );
   }

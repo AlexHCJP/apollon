@@ -1,7 +1,7 @@
-name: mini_riverpod
+name: apollon
 description: "Mini Riverpod is a state management library for Flutter, inspired by Riverpod, but with a much smaller API surface and a focus on simplicity and ease of use."
 version: 1.0.0
-homepage:
+homepage: https://github.com/AlexHCJP/mini_riverpod/tree/main
 
 environment:
   sdk: ^3.11.0

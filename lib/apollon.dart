@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-export 'mini_rivirpod_tool_screen.dart';
+part 'apollon_tool_screen.dart';
 
-class ContainerProviders extends ChangeNotifier {
+class _ProviderContainer extends ChangeNotifier {
   final _singletons = <Provider<Listenable>, Listenable>{};
   final _dependents = <Provider<Listenable>, Set<Provider<Listenable>>>{};
   final _depListeners = <Provider<Listenable>, VoidCallback>{};
@@ -22,7 +22,6 @@ class ContainerProviders extends ChangeNotifier {
     final instance = factory.create(_currentContext!, this);
     _currentlyCreating = previous;
     _singletons[factory] = instance;
-    // Re-attach listener if this provider is watched by others
     if (_depListeners.containsKey(factory)) {
       instance.addListener(_depListeners[factory]!);
     }
@@ -60,7 +59,6 @@ class ContainerProviders extends ChangeNotifier {
     if (!_singletons.containsKey(provider)) return;
     final old = _singletons[provider]!;
     _singletons.remove(provider);
-    // Remove listener from old instance; will be re-added on next _create
     if (_depListeners.containsKey(provider)) {
       old.removeListener(_depListeners[provider]!);
     }
@@ -86,15 +84,14 @@ class ProviderScope extends StatefulWidget {
   State<ProviderScope> createState() => _ProviderScopeState();
 }
 
-
 class _ProviderScopeState extends State<ProviderScope> {
-  late final ContainerProviders container;
+  late final _ProviderContainer container;
   int _version = 0;
 
   @override
   void initState() {
     super.initState();
-    container = ContainerProviders();
+    container = _ProviderContainer();
     container.addListener(_onContainerChanged);
   }
 
@@ -109,7 +106,7 @@ class _ProviderScopeState extends State<ProviderScope> {
 
   @override
   Widget build(BuildContext context) {
-    return ContainerProvider(
+    return _ProviderContainerScope(
       container: container,
       version: _version,
       child: widget.child,
@@ -117,33 +114,32 @@ class _ProviderScopeState extends State<ProviderScope> {
   }
 }
 
-class ContainerProvider extends InheritedWidget {
-  final ContainerProviders container;
+class _ProviderContainerScope extends InheritedWidget {
+  final _ProviderContainer container;
   final int version;
 
-  const ContainerProvider({
-    super.key,
+  const _ProviderContainerScope({
     required this.container,
     required this.version,
     required super.child,
   });
 
-  static ContainerProvider of(BuildContext context) {
+  static _ProviderContainerScope of(BuildContext context) {
     final provider =
-        context.dependOnInheritedWidgetOfExactType<ContainerProvider>();
+        context.dependOnInheritedWidgetOfExactType<_ProviderContainerScope>();
     assert(provider != null, 'No ContainerProvider found in context');
     return provider!;
   }
 
   @override
-  bool updateShouldNotify(ContainerProvider oldWidget) {
+  bool updateShouldNotify(_ProviderContainerScope oldWidget) {
     return container != oldWidget.container || version != oldWidget.version;
   }
 }
 
 extension ProviderExtension on BuildContext {
-  T mr<T extends Listenable>(Provider<T> provider) {
-    final containerProvider = ContainerProvider.of(this);
+  T read<T extends Listenable>(Provider<T> provider) {
+    final containerProvider = _ProviderContainerScope.of(this);
     final container = containerProvider.container;
     container._currentContext = this;
     return container.read<T>(provider);
@@ -153,5 +149,5 @@ extension ProviderExtension on BuildContext {
 class Provider<T extends Listenable> {
   Provider(this.create);
 
-  T Function(BuildContext, ContainerProviders) create;
+  T Function(BuildContext, _ProviderContainer) create;
 }

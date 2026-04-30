@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-import 'mini_riverpod.dart';
+part of 'apollon.dart';
 
-class MiniRivirpodScreen extends StatelessWidget {
-  const MiniRivirpodScreen({super.key});
+class ApollonDebugScreen extends StatelessWidget {
+  const ApollonDebugScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final container = ContainerProvider.of(context).container;
+    final container = _ProviderContainerScope.of(context).container;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mini Riverpod')),
+      appBar: AppBar(title: const Text('Apollon')),
       body: ListenableBuilder(
         listenable: container,
         builder: (context, _) {
