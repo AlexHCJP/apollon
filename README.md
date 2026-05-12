@@ -3,7 +3,7 @@
 # apollon
 ![Pub Version](https://img.shields.io/pub/v/apollon)
 ![License](https://img.shields.io/github/license/AlexHCJP/apollon)
-![Coverage](https://img.shields.io/codecov/c/github/AlexHCJP/apollon)
+[![codecov](https://codecov.io/gh/AlexHCJP/apollon/branch/master/graph/badge.svg?token=C5WCEI108R)](https://codecov.io/gh/AlexHCJP/apollon)
 ![Stars](https://img.shields.io/github/stars/AlexHCJP/apollon)
 
 A minimal, dependency-free Riverpod-inspired state management package for Flutter built on top of `Listenable` / `ChangeNotifier`.
@@ -156,4 +156,4 @@ Navigator.of(context).push(
 
 ## Codecov
 
-![Codecov](https://codecov.io/gh/AlexHCJP/apollon/graphs/sunburst.svg?token=C5WCEI108R)
+![Codecov](https://codecov.io/gh/AlexHCJP/apollon/branch/master/graphs/sunburst.svg?token=C5WCEI108R)
