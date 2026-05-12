@@ -12,7 +12,7 @@ on:
       - 'lib/**'
       - '.github/**'
   push:
-    branches: [ "dev" ]
+    branches: [ "dev", "master" ]
     paths:
       - 'lib/**'
       - '.github/**'
