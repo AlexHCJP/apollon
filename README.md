@@ -1,4 +1,10 @@
+![Frame](screenshots/contributors.png)
+
 # apollon
+![Pub Version](https://img.shields.io/pub/v/apollon)
+![License](https://img.shields.io/github/license/AlexHCJP/apollon)
+![Coverage](https://img.shields.io/codecov/c/github/AlexHCJP/apollon)
+![Stars](https://img.shields.io/github/stars/AlexHCJP/apollon)
 
 A minimal, dependency-free Riverpod-inspired state management package for Flutter built on top of `Listenable` / `ChangeNotifier`.
 
@@ -146,3 +152,8 @@ Navigator.of(context).push(
 - Every provider must return a `Listenable` (`ChangeNotifier`, `ValueNotifier`, etc.).
 - Providers are singletons scoped to the nearest `ProviderScope`.
 - There is no scoped / overridden provider support — one scope per app.
+
+
+## Codecov
+
+![Codecov](https://codecov.io/gh/AlexHCJP/apollon/graphs/sunburst.svg?token=C5WCEI108R)

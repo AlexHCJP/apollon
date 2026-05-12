@@ -1,6 +1,14 @@
 part of 'apollon.dart';
 
+/// A debug screen that lists all providers currently alive in the nearest
+/// [ProviderScope].
+///
+/// Each entry shows the runtime type and [toString] value of the provider's
+/// [Listenable] instance and updates automatically whenever the container
+/// changes. Add this screen to your dev-only routes to inspect state at
+/// runtime without attaching a debugger.
 class ApollonDebugScreen extends StatelessWidget {
+  /// Creates the [ApollonDebugScreen].
   const ApollonDebugScreen({super.key});
 
   @override
